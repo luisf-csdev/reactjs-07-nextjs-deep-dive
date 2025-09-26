@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@import '@luisf-ignite-ui/react/styles';
+@source '../../node_modules/@luisf-ignite-ui/react';
+
+:root {
+  --background: var(--gray-900);
+  --foreground: var(--gray-100);
+  --font-default: var(--font-family-default);
+  --font-code: var(--font-family-code);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-default: var(--font-default);
+  --font-code: var(--font-code);
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-default);
+}
