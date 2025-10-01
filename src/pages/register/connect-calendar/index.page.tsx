@@ -3,10 +3,21 @@ import { Button } from '@luisf-ignite-ui/react/button'
 import { Heading } from '@luisf-ignite-ui/react/heading'
 import { MultiStep } from '@luisf-ignite-ui/react/multi-step'
 import { Text } from '@luisf-ignite-ui/react/text'
-import { signIn } from 'next-auth/react'
-import { ArrowRight } from 'phosphor-react'
+import { useRouter } from 'next/router'
+import { signIn, useSession } from 'next-auth/react'
+import { ArrowRight, Check } from 'phosphor-react'
 
 export default function ConnectCalendar() {
+  const session = useSession()
+  const router = useRouter()
+
+  const hasAuthError = !!router.query.error
+  const isSignedIn = session.status === 'authenticated'
+
+  async function handleConnectCalendar() {
+    await signIn('google')
+  }
+
   return (
     <main className="mx-auto mt-20 mb-4 max-w-[572px] px-4">
       <div className="px-6">
@@ -23,19 +34,33 @@ export default function ConnectCalendar() {
       </div>
 
       <Box className="mt-6 flex flex-col">
-        <div className="mb-2 flex items-center justify-between rounded-md border border-gray-600 px-6 py-4">
+        <div className="mb-4 flex items-center justify-between rounded-md border border-gray-600 px-6 py-4">
           <Text>Google Calendar</Text>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => signIn('google')}
-          >
-            Connect
-            <ArrowRight />
-          </Button>
+          {isSignedIn ? (
+            <Button size="sm" disabled>
+              Connected
+              <Check />
+            </Button>
+          ) : (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleConnectCalendar}
+            >
+              Connect
+              <ArrowRight />
+            </Button>
+          )}
         </div>
 
-        <Button type="submit">
+        {hasAuthError && (
+          <Text size="sm" className="mb-4 !text-[#f75a68]">
+            Failed to connect to Google, please check if you have enabled access
+            permissions to Google Calendar.
+          </Text>
+        )}
+
+        <Button disabled={!isSignedIn} type="submit">
           Next step
           <ArrowRight />
         </Button>
