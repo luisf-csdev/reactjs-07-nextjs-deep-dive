@@ -18,6 +18,10 @@ export default function ConnectCalendar() {
     await signIn('google')
   }
 
+  async function handleNavigateToNextStep() {
+    await router.push('/register/time-intervals')
+  }
+
   return (
     <main className="mx-auto mt-20 mb-4 max-w-[572px] px-4">
       <div className="px-6">
@@ -60,7 +64,11 @@ export default function ConnectCalendar() {
           </Text>
         )}
 
-        <Button disabled={!isSignedIn} type="submit">
+        <Button
+          onClick={handleNavigateToNextStep}
+          disabled={!isSignedIn}
+          type="submit"
+        >
           Next step
           <ArrowRight />
         </Button>
