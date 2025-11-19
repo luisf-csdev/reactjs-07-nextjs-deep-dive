@@ -10,6 +10,7 @@ import type { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { getServerSession } from 'next-auth'
 import { useSession } from 'next-auth/react'
+import { NextSeo } from 'next-seo'
 import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
@@ -58,44 +59,48 @@ export default function UpdateProfile() {
   }
 
   return (
-    <main className="mx-auto mt-20 mb-4 max-w-[572px] px-4">
-      <div className="px-6">
-        <Heading asChild className="leading-leading-base">
-          <strong>Tell the world a bit about you</strong>
-        </Heading>
+    <>
+      <NextSeo title="Update your profile | Ignite Call" noindex />
 
-        <Text className="mb-6 text-gray-200">
-          Finally, a brief description and a profile picture.
-        </Text>
+      <main className="mx-auto mt-20 mb-4 max-w-[572px] px-4">
+        <div className="px-6">
+          <Heading asChild className="leading-leading-base">
+            <strong>Tell the world a bit about you</strong>
+          </Heading>
 
-        <MultiStep size={4} currentStep={4} />
-      </div>
+          <Text className="mb-6 text-gray-200">
+            Finally, a brief description and a profile picture.
+          </Text>
 
-      <Box asChild className="mt-6 flex flex-col gap-4">
-        <form onSubmit={handleSubmit(handleUpdateProfile)}>
-          <label className="flex flex-col gap-2">
-            <Text size="sm">Profile picture</Text>
-            <Avatar
-              src={session.data?.user.avatarUrl}
-              alt={session.data?.user.name}
-            />
-          </label>
+          <MultiStep size={4} currentStep={4} />
+        </div>
 
-          <label className="flex flex-col gap-2">
-            <Text size="sm">About you</Text>
-            <TextArea {...register('bio')} />
-            <Text size="sm" className="!text-gray-200">
-              Tell us a little about yourself. This will be displayed on your
-              personal page.
-            </Text>
-          </label>
+        <Box asChild className="mt-6 flex flex-col gap-4">
+          <form onSubmit={handleSubmit(handleUpdateProfile)}>
+            <label className="flex flex-col gap-2">
+              <Text size="sm">Profile picture</Text>
+              <Avatar
+                src={session.data?.user.avatarUrl}
+                alt={session.data?.user.name}
+              />
+            </label>
 
-          <Button disabled={isSubmitting} type="submit">
-            Finish
-            <ArrowRight />
-          </Button>
-        </form>
-      </Box>
-    </main>
+            <label className="flex flex-col gap-2">
+              <Text size="sm">About you</Text>
+              <TextArea {...register('bio')} />
+              <Text size="sm" className="!text-gray-200">
+                Tell us a little about yourself. This will be displayed on your
+                personal page.
+              </Text>
+            </label>
+
+            <Button disabled={isSubmitting} type="submit">
+              Finish
+              <ArrowRight />
+            </Button>
+          </form>
+        </Box>
+      </main>
+    </>
   )
 }

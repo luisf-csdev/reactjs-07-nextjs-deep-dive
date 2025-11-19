@@ -7,6 +7,7 @@ import { Text } from '@luisf-ignite-ui/react/text'
 import { TextInput } from '@luisf-ignite-ui/react/text-input'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 import { ArrowRight } from 'phosphor-react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -64,48 +65,52 @@ export default function Register() {
   }
 
   return (
-    <main className="mx-auto mt-20 mb-4 max-w-[572px] px-4">
-      <div className="px-6">
-        <Heading asChild className="leading-leading-base">
-          <strong>Welcome to Ignite Call!</strong>
-        </Heading>
+    <>
+      <NextSeo title="Create an account | Ignite Call" />
 
-        <Text className="mb-6 text-gray-200">
-          We need some information to create your profile! Oh, and you can edit
-          this information later.
-        </Text>
+      <main className="mx-auto mt-20 mb-4 max-w-[572px] px-4">
+        <div className="px-6">
+          <Heading asChild className="leading-leading-base">
+            <strong>Welcome to Ignite Call!</strong>
+          </Heading>
 
-        <MultiStep size={4} currentStep={1} />
-      </div>
+          <Text className="mb-6 text-gray-200">
+            We need some information to create your profile! Oh, and you can
+            edit this information later.
+          </Text>
 
-      <Box asChild className="mt-6 flex flex-col gap-4">
-        <form onSubmit={handleSubmit(handleRegister)}>
-          <label className="flex flex-col gap-2">
-            <Text size="sm">Username</Text>
-            <TextInput
-              prefix="ignite.com/"
-              placeholder="your-username"
-              {...register('username')}
-            />
+          <MultiStep size={4} currentStep={1} />
+        </div>
 
-            {errors.username && (
-              <FormError>{errors.username.message}</FormError>
-            )}
-          </label>
+        <Box asChild className="mt-6 flex flex-col gap-4">
+          <form onSubmit={handleSubmit(handleRegister)}>
+            <label className="flex flex-col gap-2">
+              <Text size="sm">Username</Text>
+              <TextInput
+                prefix="ignite.com/"
+                placeholder="your-username"
+                {...register('username')}
+              />
 
-          <label className="flex flex-col gap-2">
-            <Text size="sm">Full name</Text>
-            <TextInput placeholder="Your name" {...register('name')} />
+              {errors.username && (
+                <FormError>{errors.username.message}</FormError>
+              )}
+            </label>
 
-            {errors.name && <FormError>{errors.name.message}</FormError>}
-          </label>
+            <label className="flex flex-col gap-2">
+              <Text size="sm">Full name</Text>
+              <TextInput placeholder="Your name" {...register('name')} />
 
-          <Button disabled={isSubmitting} type="submit">
-            Next step
-            <ArrowRight />
-          </Button>
-        </form>
-      </Box>
-    </main>
+              {errors.name && <FormError>{errors.name.message}</FormError>}
+            </label>
+
+            <Button disabled={isSubmitting} type="submit">
+              Next step
+              <ArrowRight />
+            </Button>
+          </form>
+        </Box>
+      </main>
+    </>
   )
 }

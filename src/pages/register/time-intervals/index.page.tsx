@@ -7,6 +7,7 @@ import { MultiStep } from '@luisf-ignite-ui/react/multi-step'
 import { Text } from '@luisf-ignite-ui/react/text'
 import { TextInput } from '@luisf-ignite-ui/react/text-input'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 import { ArrowRight } from 'phosphor-react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import z from 'zod'
@@ -136,75 +137,79 @@ export default function TimeIntervals() {
   }
 
   return (
-    <main className="mx-auto mt-20 mb-4 max-w-[572px] px-4">
-      <div className="px-6">
-        <Heading asChild className="leading-leading-base">
-          <strong>Almost there!</strong>
-        </Heading>
+    <>
+      <NextSeo title="Select your availability  | Ignite Call" noindex />
 
-        <Text className="mb-6 text-gray-200">
-          Set the time range you are available each day of the week.
-        </Text>
+      <main className="mx-auto mt-20 mb-4 max-w-[572px] px-4">
+        <div className="px-6">
+          <Heading asChild className="leading-leading-base">
+            <strong>Almost there!</strong>
+          </Heading>
 
-        <MultiStep size={4} currentStep={3} />
-      </div>
-      <Box asChild className="mt-6 flex flex-col">
-        <form onSubmit={handleSubmit(handleSetTimeIntervals)}>
-          <div className="mb-4 rounded-md border border-gray-600">
-            {fields.map((field, index) => (
-              <div
-                key={field.id}
-                className="flex items-center justify-between px-4 py-3 [&+&]:border-t [&+&]:border-gray-600"
-              >
-                <div className="flex items-center gap-3">
-                  <Controller
-                    name={`intervals.${index}.enabled`}
-                    control={control}
-                    render={({ field }) => (
-                      <Checkbox
-                        onCheckedChange={(checked) => {
-                          field.onChange(checked === true)
-                        }}
-                        checked={field.value}
-                      />
-                    )}
-                  />
+          <Text className="mb-6 text-gray-200">
+            Set the time range you are available each day of the week.
+          </Text>
 
-                  <Text>{weekDays[field.weekDay]}</Text>
+          <MultiStep size={4} currentStep={3} />
+        </div>
+        <Box asChild className="mt-6 flex flex-col">
+          <form onSubmit={handleSubmit(handleSetTimeIntervals)}>
+            <div className="mb-4 rounded-md border border-gray-600">
+              {fields.map((field, index) => (
+                <div
+                  key={field.id}
+                  className="flex items-center justify-between px-4 py-3 [&+&]:border-t [&+&]:border-gray-600"
+                >
+                  <div className="flex items-center gap-3">
+                    <Controller
+                      name={`intervals.${index}.enabled`}
+                      control={control}
+                      render={({ field }) => (
+                        <Checkbox
+                          onCheckedChange={(checked) => {
+                            field.onChange(checked === true)
+                          }}
+                          checked={field.value}
+                        />
+                      )}
+                    />
+
+                    <Text>{weekDays[field.weekDay]}</Text>
+                  </div>
+
+                  <div className="flex items-center gap-2 [&_input::-webkit-calendar-picker-indicator]:filter-[invert(100%)_brightness(30%)]">
+                    <TextInput
+                      size="sm"
+                      type="time"
+                      step={60}
+                      disabled={intervals[index].enabled === false}
+                      {...register(`intervals.${index}.startTime`)}
+                    />
+                    <TextInput
+                      size="sm"
+                      type="time"
+                      step={60}
+                      disabled={intervals[index].enabled === false}
+                      {...register(`intervals.${index}.endTime`)}
+                    />
+                  </div>
                 </div>
+              ))}
+            </div>
 
-                <div className="flex items-center gap-2 [&_input::-webkit-calendar-picker-indicator]:filter-[invert(100%)_brightness(30%)]">
-                  <TextInput
-                    size="sm"
-                    type="time"
-                    step={60}
-                    disabled={intervals[index].enabled === false}
-                    {...register(`intervals.${index}.startTime`)}
-                  />
-                  <TextInput
-                    size="sm"
-                    type="time"
-                    step={60}
-                    disabled={intervals[index].enabled === false}
-                    {...register(`intervals.${index}.endTime`)}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+            {!!errors.intervals?.root?.message && (
+              <FormError className="mb-4">
+                {errors.intervals?.root?.message}
+              </FormError>
+            )}
 
-          {!!errors.intervals?.root?.message && (
-            <FormError className="mb-4">
-              {errors.intervals?.root?.message}
-            </FormError>
-          )}
-
-          <Button disabled={isSubmitting} type="submit">
-            Next step
-            <ArrowRight />
-          </Button>
-        </form>
-      </Box>
-    </main>
+            <Button disabled={isSubmitting} type="submit">
+              Next step
+              <ArrowRight />
+            </Button>
+          </form>
+        </Box>
+      </main>
+    </>
   )
 }
