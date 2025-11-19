@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -11,7 +11,7 @@ model User {
   id        String    @id @default(uuid(7))
   username  String    @unique
   name      String
-  bio       String?
+  bio       String?   @db.Text
   email     String?   @unique
   avatarUrl String?   @map("avatar_url")
   createdAt DateTime  @default(now()) @map("created_at")
@@ -20,6 +20,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   timeIntervals UserTimeInterval[]
+  schedulings   Scheduling[]
 
   @@map("users")
 }
@@ -30,12 +31,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String  @map("provider_account_id")
-  refreshToken      String? @map("refresh_token")
-  accessToken       String? @map("access_token")
+  refreshToken      String? @map("refresh_token") @db.Text
+  accessToken       String? @map("access_token") @db.Text
   expiresAt         Int?    @map("expires_at")
   tokenType         String? @map("token_type")
   scope             String? @map("scope")
-  idToken           String? @map("id_token")
+  idToken           String? @map("id_token") @db.Text
   sessionState      String? @map("session_state")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -65,4 +66,18 @@ model UserTimeInterval {
   user User @relation(fields: [userId], references: [id])
 
   @@map("user_time_intervals")
+}
+
+model Scheduling {
+  id           String   @id @default(uuid())
+  date         DateTime
+  name         String
+  email        String
+  observations String?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  @@map("schedulings")
 }
