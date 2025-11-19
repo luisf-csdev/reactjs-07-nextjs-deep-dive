@@ -66,7 +66,7 @@ export function CalendarStep({ onSelectedDateTime }: CalendarStepProps) {
           'w-auto grid-cols-[1fr_280px] [@media(max-width:900px)]:grid-cols-1',
       )}
     >
-      <Calendar selectedDate={selectedDate} onDateSelected={setSelectedDate} />
+      <Calendar onDateSelected={setSelectedDate} />
 
       {isDateSelected && (
         <div className="absolute top-0 right-0 bottom-0 w-[280px] overflow-y-scroll border-l border-l-gray-600 px-6 pt-6">
