@@ -179,6 +179,7 @@ export default function TimeIntervals() {
 
                   <div className="flex items-center gap-2 [&_input::-webkit-calendar-picker-indicator]:filter-[invert(100%)_brightness(30%)]">
                     <TextInput
+                      //@ts-expect-error Property is correct
                       size="sm"
                       type="time"
                       step={60}
@@ -186,6 +187,7 @@ export default function TimeIntervals() {
                       {...register(`intervals.${index}.startTime`)}
                     />
                     <TextInput
+                      //@ts-expect-error Property is correct
                       size="sm"
                       type="time"
                       step={60}

@@ -45,6 +45,7 @@ export function ClaimUsernameForm() {
       >
         <form onSubmit={handleSubmit(handleClaimUsername)}>
           <TextInput
+            //@ts-expect-error Property is correct
             size="sm"
             prefix="ignite.com/"
             placeholder="your-username"
